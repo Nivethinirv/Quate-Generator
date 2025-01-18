@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    
+	<style>
+	/* General Styles */
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    background-color: #f0f4f8;
+}
+
+.container {
+    width: 100%;
+    max-width: 400px;
+    padding: 20px;
+    text-align: center;
+    background-color: #ffffff;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    border-radius: 10px;
+}
+
+/* Page Switching */
+.page {
+    display: none;
+}
+
+.page.active {
+    display: block;
+}
+
+/* Form Styles */
+form {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    margin-top: 20px;
+}
+
+input {
+    padding: 10px;
+    font-size: 16px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+}
+
+button {
+    padding: 10px;
+    font-size: 16px;
+    background-color: #007bff;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+button:hover {
+    background-color: #0056b3;
+}
+
+.error {
+    color: red;
+    font-size: 14px;
+}
+
+/* Quote Page Styles */
+#quote-container {
+    margin: 20px 0;
+    padding: 20px;
+    background-color: #f9f9f9;
+    border: 1px solid #ddd;
+    border-radius: 10px;
+    font-size: 18px;
+    font-style: italic;
+}
+</style>
+</head>
+<body>
+    <div class="container">
+        <!-- Sign-Up Page -->
+        <div id="signup-page" class="page active">
+		    <h1>QUOTE GENERATOR</h1>
+            <h3>Sign Up</h3>
+            <form id="signup-form">
+                <label for="signup-username">Username:</label>
+                <input type="text" id="signup-username" name="signup-username" placeholder="Enter username" required>
+                <label for="signup-password">Password:</label>
+                <input type="password" id="signup-password" name="signup-password" placeholder="Enter password" required>
+                <button type="submit">Sign Up</button>
+                <p id="signup-error" class="error"></p>
+            </form>
+        </div>
+
+        <!-- Quote Generator Page -->
+        <div id="quote-page" class="page">
+            <h1>Random Quote Generator</h1>
+            <div id="quote-container">
+                <p id="quote">Press the button to get a random quote!</p>
+                <button id="new-quote">Get Quote</button>
+            </div>
+            <button id="logout">Logout</button>
+        </div>
+    </div>
+    <script>
+        const signupForm = document.getElementById('signup-form');
+        const signupPage = document.getElementById('signup-page');
+        const quotePage = document.getElementById('quote-page');
+        const signupError = document.getElementById('signup-error');
+        const newQuoteButton = document.getElementById('new-quote');
+        const quoteElement = document.getElementById('quote');
+        const logoutButton = document.getElementById('logout');
+
+        // Dummy storage for user details
+        let user = null;
+
+        // Static quotes
+        const quotes = [
+            "Happiness depends upon ourselves.",
+            "The only way to do great work is to love what you do.",
+            "Believe you can and you're halfway there.",
+            "Do what you can with all you have, wherever you are.",
+            "What lies behind us and what lies before us are tiny matters compared to what lies within us."
+        ];
+
+        // Handle sign-up form submission
+        signupForm.addEventListener('submit', function(e) {
+            e.preventDefault();
+            const username = document.getElementById('signup-username').value;
+            const password = document.getElementById('signup-password').value;
+
+            if (username && password) {
+                user = { username, password };
+                signupPage.classList.remove('active');
+                quotePage.classList.add('active');
+            } else {
+                signupError.textContent = "Please fill out all fields!";
+            }
+        });
+
+        // Generate a random quote
+        newQuoteButton.addEventListener('click', function() {
+            const randomIndex = Math.floor(Math.random() * quotes.length);
+            quoteElement.textContent = quotes[randomIndex];
+        });
+
+        // Logout button
+        logoutButton.addEventListener('click', function() {
+            quotePage.classList.remove('active');
+            signupPage.classList.add('active');
+            signupForm.reset();
+            signupError.textContent = "";
+            user = null;
+        });
+    </script>
+</body>
+</html>
